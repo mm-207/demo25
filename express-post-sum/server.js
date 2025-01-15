@@ -1,30 +1,32 @@
 const express = require('express');
 const app = express();
 
-// Rute for root (/) som returnerer en enkel melding
 app.get('/', (req, res) => {
-  res.send('Hello World!');  // Kan endres til hva du vil vise på root URL-en
+  res.send('Hello World!');  
 });
 
-// Rute for /tmp/poem som returnerer et dikt
 app.get('/tmp/poem', (req, res) => {
-  res.send('This is a poem...\nIt is beautiful.\nEnjoy reading it!');  // Du kan endre dette til et riktig dikt
+  res.send('I am a woman, strong and free, With dreams as vast as the endless sea. I rise, I shine, and boldly stand, With equality held in my hand.');  // Du kan endre dette til et riktig dikt
 });
 
-// Rute for /tmp/quote som returnerer et tilfeldig sitat
 app.get('/tmp/quote', (req, res) => {
-  const quotes = [
-    'The only way to do great work is to love what you do. – Steve Jobs',
-    'Life is what happens when you’re busy making other plans. – John Lennon',
-    'In the end, we will remember not the words of our enemies, but the silence of our friends. – Martin Luther King Jr.',
-    'To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment. – Ralph Waldo Emerson',
-    'It is never too late to be what you might have been. – George Eliot'
-  ];
-  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-  res.send(randomQuote);
-});
+    const quotes = [
+      '“Do not go where the path may lead, go instead where there is no path and leave a trail.” – Ralph Waldo Emerson',
+      '“The only limit to our realization of tomorrow is our doubts of today.” – Franklin D. Roosevelt',
+      '“Success is not final, failure is not fatal: It is the courage to continue that counts.” – Winston Churchill',
+      '“The greatest glory in living lies not in never falling, but in rising every time we fall.” – Nelson Mandela',
+      '“Life itself is the most wonderful fairy tale.” – Hans Christian Andersen',
+      '“You must be the change you wish to see in the world.” – Mahatma Gandhi',
+      '“The mind is everything. What you think you become.” – Buddha',
+      '“It is never too late to be what you might have been.” – George Eliot',
+      '“Do not wait for leaders; do it alone, person to person.” – Mother Teresa',
+      '“The best time to plant a tree was 20 years ago. The second best time is now.” – Chinese Proverb'
+    ];
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    res.send(randomQuote);
+  });
+  
 
-// Sett opp en port og start serveren
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
