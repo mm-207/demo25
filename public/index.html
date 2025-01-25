@@ -4,12 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo</title>
+    <title>Card Game</title>
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
-    <h1>Hello Class</h1>
+    <div class="container">
+        <div class="controls">
+            <button onclick="createDeck()">New Deck</button>
+            <button id="shuffleDeck" onclick="shuffleDeck()" disabled>Shuffle</button>
+            <button id="drawCard" onclick="drawCard()" disabled>Draw Card</button>
+        </div>
+        <div id="message"></div>
+        <div id="cardDisplay" class="card-display"></div>
+    </div>
+    <script src="/script.js"></script>
 </body>
 
 </html>

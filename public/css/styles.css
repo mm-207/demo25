@@ -1,0 +1,47 @@
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    font-size: 16px;
+}
+
+.card-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.card {
+    width: 100px;
+    height: 140px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    position: relative;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.red { color: red; }
+.black { color: black; }
+
+.card-value {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card-suit {
+    font-size: 32px;
+}
