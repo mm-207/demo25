@@ -1,83 +1,105 @@
-
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
+
 const app = express();
+const port = 3000;
 
 app.use(express.json());
 
+let decks = {};
 
-const decks = {};
-
-
-const createDeck = () => {
+function createDeck() {
   const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-  const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'];
-  const deck = [];
+  const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
-  for (const suit of suits) {
-    for (const value of values) {
+  let deck = [];
+  suits.forEach(suit => {
+    values.forEach(value => {
       deck.push({ suit, value });
-    }
-  }
+    });
+  });
 
   return deck;
-};
-
+}
 
 app.post('/temp/deck', (req, res) => {
   const deckId = uuidv4();
-  decks[deckId] = createDeck();
-  res.status(201).json({ deck_id: deckId });
+  const newDeck = createDeck();
+  decks[deckId] = {
+    deckId,
+    cards: newDeck,
+    shuffled: false
+  };
+  res.status(201).json(decks[deckId]);
 });
 
+app.get('/temp/deck/:deckId', (req, res) => {
+  const { deckId } = req.params;
+  const deck = decks[deckId];
 
-app.patch('/temp/deck/shuffle/:deck_id', (req, res) => {
-  const { deck_id } = req.params;
-
-  if (!decks[deck_id]) {
+  if (!deck) {
     return res.status(404).json({ error: 'Deck not found' });
   }
 
-  const deck = decks[deck_id];
-  for (let i = deck.length - 1; i > 0; i--) {
+  res.status(200).json(deck);
+});
+
+app.get('/temp/deck/:deckId/card', (req, res) => {
+  const { deckId } = req.params;
+  const deck = decks[deckId];
+
+  if (!deck) {
+    return res.status(404).json({ error: 'Deck not found' });
+  }
+
+  res.status(200).json(deck.cards);
+});
+
+
+function shuffleDeck(array) {
+  for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [deck[i], deck[j]] = [deck[j], deck[i]];
+    [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
+}
 
-  res.json({ message: 'Deck shuffled' });
-});
 
+app.patch('/temp/deck/:deckId/shuffle', (req, res) => {
+  const { deckId } = req.params;
+  const deck = decks[deckId];
 
-app.get('/temp/deck/:deck_id', (req, res) => {
-  const { deck_id } = req.params;
-
-  if (!decks[deck_id]) {
+  if (!deck) {
     return res.status(404).json({ error: 'Deck not found' });
   }
 
-  res.json(decks[deck_id]);
+  deck.cards = shuffleDeck(deck.cards);
+  deck.shuffled = true;
+  res.status(200).json(deck);
 });
 
 
-app.get('/temp/deck/:deck_id/card', (req, res) => {
-  const { deck_id } = req.params;
+app.post('/temp/deck/:deckId/draw', (req, res) => {
+  const { deckId } = req.params;
+  const count = parseInt(req.query.count) || 1;
+  const deck = decks[deckId];
 
-  if (!decks[deck_id]) {
+  if (!deck) {
     return res.status(404).json({ error: 'Deck not found' });
   }
 
-  const deck = decks[deck_id];
-  if (deck.length === 0) {
-    return res.status(400).json({ error: 'No cards left in the deck' });
+  if (deck.cards.length < count) {
+    return res.status(400).json({ error: 'Not enough cards remaining' });
   }
 
-  const randomIndex = Math.floor(Math.random() * deck.length);
-  const card = deck.splice(randomIndex, 1)[0];
-  res.json(card);
+  const drawnCards = deck.cards.splice(0, count);
+  res.status(200).json({ cards: drawnCards, remaining: deck.cards.length });
 });
 
+app.get('/', (req, res) => {
+    res.send('API is running! Use specific endpoints like /temp/deck');
+});
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
