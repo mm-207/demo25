@@ -13,13 +13,42 @@ const shuffleDeck = async () => {
     showMessage('Deck shuffled!');
 };
 
+const showError = (message) => {
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    setTimeout(() => {
+        errorDiv.style.display = 'none';
+    }, 3000);
+};
+
+const handleApiCall = async (url, options = {}) => {
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'API request failed');
+        }
+        return await response.json();
+    } catch (error) {
+        showError(error.message);
+        throw error;
+    }
+};
+
 const drawCard = async () => {
-    if (!currentDeckId) return;
-    const response = await fetch(`/temp/deck/${currentDeckId}/draw?count=1`, { 
-        method: 'POST' 
-    });
-    const data = await response.json();
-    displayCard(data.cards[0]);
+    try {
+        if (!currentDeckId) {
+            showError('No deck selected');
+            return;
+        }
+        const data = await handleApiCall(`/temp/deck/${currentDeckId}/draw?count=1`, { 
+            method: 'POST' 
+        });
+        displayCard(data.cards[0]);
+    } catch (error) {
+        console.error('Error drawing card:', error);
+    }
 };
 
 const displayCard = (card) => {

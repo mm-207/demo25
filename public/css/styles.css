@@ -45,3 +45,13 @@ button {
 .card-suit {
     font-size: 32px;
 }
+
+.error-message {
+    display: none;
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    text-align: center;
+}

@@ -81,20 +81,27 @@ app.patch('/temp/deck/:deckId/shuffle', (req, res) => {
 
 
 app.post('/temp/deck/:deckId/draw', (req, res) => {
-  const { deckId } = req.params;
-  const count = parseInt(req.query.count) || 1;
-  const deck = decks[deckId];
-
-  if (!deck) {
-    return res.status(404).json({ error: 'Deck not found' });
+  try {
+    const { deckId } = req.params;
+    const count = parseInt(req.query.count);
+    
+    if (isNaN(count) || count < 1) {
+      return res.status(400).json({ error: 'Invalid card count' });
+    }
+    
+    const deck = decks[deckId];
+    if (!deck) {
+      return res.status(404).json({ error: 'Deck not found' });
+    }
+    if (deck.cards.length < count) {
+      return res.status(400).json({ error: `Not enough cards. Only ${deck.cards.length} remaining` });
+    }
+    
+    const drawnCards = deck.cards.splice(0, count);
+    res.status(200).json({ cards: drawnCards, remaining: deck.cards.length });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error while drawing cards' });
   }
-
-  if (deck.cards.length < count) {
-    return res.status(400).json({ error: 'Not enough cards remaining' });
-  }
-
-  const drawnCards = deck.cards.splice(0, count);
-  res.status(200).json({ cards: drawnCards, remaining: deck.cards.length });
 });
 
 app.get('/', (req, res) => {
@@ -103,4 +110,10 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+
+// Add error middleware at the end
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something broke!' });
 });
