@@ -1,15 +1,17 @@
 const express = require('express');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session); // Bruker filbasert lagring
 
 const app = express();
 app.use(express.json());
 
-// Middleware for session-håndtering (uten Redis)
+// Middleware for sesjonshåndtering med filbasert lagring
 app.use(session({
-    secret: "supersecretkey", // Bytt ut med en mer sikker nøkkel
+    store: new FileStore({ path: "./sessions", retries: 0 }), // Lagrer sessions i "sessions"-mappen
+    secret: "supersecretkey", 
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Sett til true hvis du bruker HTTPS
+    cookie: { secure: false } 
 }));
 
 // Hjemmerute med session-teller
@@ -18,12 +20,11 @@ app.get('/', (req, res) => {
     res.send(`Hello World! Du har besøkt denne siden ${req.session.visits} ganger.`);
 });
 
-// Route for dikt
+// Andre ruter (samme som før)
 app.get('/tmp/poem', (req, res) => {
     res.send('I am a woman, strong and free, With dreams as vast as the endless sea. I rise, I shine, and boldly stand, With equality held in my hand.');
 });
 
-// Route for tilfeldige sitater
 app.get('/tmp/quote', (req, res) => {
     const quotes = [
         '“Do not go where the path may lead, go instead where there is no path and leave a trail.” – Ralph Waldo Emerson',
@@ -41,7 +42,6 @@ app.get('/tmp/quote', (req, res) => {
     res.send(randomQuote);
 });
 
-// Route for å summere to tall
 app.post('/tmp/sum/:a/:b', (req, res) => {
     const a = parseInt(req.params.a, 10);  
     const b = parseInt(req.params.b, 10);  
