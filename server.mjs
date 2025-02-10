@@ -30,3 +30,5 @@ server.listen(server.get('port'), function () {
     console.log('server running', server.get('port'));
 });
 
+
+export default server;
