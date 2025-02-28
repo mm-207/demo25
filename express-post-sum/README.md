@@ -17,19 +17,19 @@ Applikasjonen kjører live på [Render](http://localhost:3000/family) 🎉
 
 -------------------------------------------------------------------------
 
-# Min Progressive Web App (PWA)
+# Min Progressive Web App
 
 Dette prosjektet er en Express-basert API som nå støtter PWA.
 
-## 📌 URL til appen (hostet på Render)
-🔗 [https://mittprosjekt.onrender.com](https://mittprosjekt.onrender.com)
+##  URL til appen
+[Render](https://demo25-1-g6of.onrender.com)
 
-## 🔹 Hvordan fungerer PWA?
+##  Hvordan fungerer PWA?
 - **Service Worker** håndterer caching og offline-støtte.
 - **Manifest.json** gir metadata for installasjon på enheter.
 - **Express-server** leverer statiske filer.
 
-## 🛠 Hvordan teste?
+## Hvordan teste?
 1. Åpne `https://mittprosjekt.onrender.com`
 2. Åpne **DevTools (F12)** → **Application** → **Service Workers**
 3. Aktiver "Offline", oppdater siden og se at innholdet lastes fra cachen.
