@@ -1,0 +1,24 @@
+{
+    "name": "Min PWA",
+    "short_name": "PWA",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "/icons/icon.png",
+        "sizes": "200x200",
+        "type": "image/png"
+      }
+    ],
+     "screenshots": [
+  {
+    "src": "/icons/screenshot.png",
+    "sizes": "1280x720",
+    "type": "image/png",
+    "form_factor": "wide"
+  }
+]
+  }
+  

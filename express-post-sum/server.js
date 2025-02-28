@@ -1,11 +1,17 @@
-const express = require("express");
+const express = require('express');
+const path = require('path');
+
 const app = express();
-const familyRoutes = require("./routes/familyRoutes");
-
-app.use(express.json());
-app.use(familyRoutes);
-
 const PORT = process.env.PORT || 3000;
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+
 app.listen(PORT, () => {
-  console.log(`Server kjører på http://localhost:${PORT}`);
+    console.log(`Server kjører på http://localhost:${PORT}`);
 });
