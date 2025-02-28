@@ -9,6 +9,8 @@ treeRouter.use(express.json());
 
 treeRouter.get("/", (req, res, next) => {
 
+    req.session["tre"] = "Eik";
+
     res.json(tree);
 
 });
