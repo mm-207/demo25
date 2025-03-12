@@ -12,7 +12,7 @@ TemplateManager.fetchTemplate = async (path) => {
 
 }
 
-TemplateManager.cloneTemplate = (template, target, data) => {
+TemplateManager.cloneTemplate = (template, target, data = {}) => {
     const clone = template.content.cloneNode(true);
     let html = clone.innerHTML;
 
