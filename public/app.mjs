@@ -1,6 +1,8 @@
 
+
 if ("serviceWorker" in navigator) {
     console.log("Hey I am installing service worker");
-    navigator.serviceWorker.register("/sw.js");
+    await navigator.serviceWorker.register("/sw.js");
     console.log("Done");
 }
+

@@ -1,10 +1,10 @@
 import TemplateManager from "../modules/templateManager.mjs";
 const templateFile = "/view/loginView.html";
 
-console.log("??")
+const defaultData = { userName: "default user" }
 
 const template = await TemplateManager.fetchTemplate(templateFile);
-const loginView = TemplateManager.cloneTemplate(template, document.body);
+const loginView = TemplateManager.cloneTemplate(template, document.body, defaultData);
 
 console.log(loginView);
 
